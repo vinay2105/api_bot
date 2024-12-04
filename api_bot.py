@@ -5,8 +5,9 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import csv
+import os
 
-genai.configure(api_key="AIzaSyCq-9E_exJEB7d6hx1822dXmrxnVG2Foyg")
+genai.configure(api_key=os.getenv("api_key"))
 
 app = FastAPI()
 
