@@ -98,12 +98,12 @@ def ask_question(request: QuestionRequest):
         similar_question, answer = find_similar_question(user_question, csv_path, threshold=0.6)
 
         if similar_question:
-            return {"answer": answer, "source": "csv"}
+            return {"answer": answer}
         else:
             # Query Gemini API for a new answer
             answer = ask_gemini(user_question, pdf_text)
             store_qna_to_csv(user_question, answer, csv_path)
-            return {"answer": answer, "source": "gemini"}
+            return {"answer": answer}
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Extracted text file not found")
     except Exception as e:
