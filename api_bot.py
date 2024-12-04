@@ -69,8 +69,19 @@ def store_qna_to_csv(user_question, answer, csv_path):
 # Helper function to query Gemini API
 def ask_gemini(question, pdf_text):
     try:
-        response = genai.GenerativeModel("gemini-1.5-flash").generate_content(f"Context: {pdf_text}\nQuestion: {question}")
-        return response.text
+        # Create the prompt using the question and context
+        prompt = f"Context: {pdf_text}\nQuestion: {question}"
+        
+        # Generate the response using the `generate_text` function
+        response = genai.generate_text(
+            model="models/chat-bison-001",  # Use the appropriate Gemini model
+            prompt=prompt,
+            temperature=0.7,  # Adjust temperature for creativity
+            max_output_tokens=300  # Adjust the token limit for the response
+        )
+        
+        # Extract and return the response text
+        return response.result
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error querying Gemini API: {str(e)}")
 
